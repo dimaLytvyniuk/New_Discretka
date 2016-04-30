@@ -1,12 +1,40 @@
-﻿<Window x:Class="New_Discretka.MainWindow"
+﻿<Window x:Class="Labs.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:New_Discretka"
+        xmlns:local="clr-namespace:Laba4"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
+        Title="Лабораторна робота №4" Height="600" Width="1200">
+    <Grid Background="White">
+        <ListBox x:Name="inputBox" Width="100" Height="449" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,80,0,27" SelectionChanged="input_SelectionChanged" />
+        <Label x:Name="label" Content="Вхідний файл" HorizontalAlignment="Left" Margin="20,10,0,0" VerticalAlignment="Top" Width="100" HorizontalContentAlignment="Center"/>
+        <Button x:Name="button_Save" Content="Зберегти файл" HorizontalAlignment="Left" Margin="145,486,0,30" VerticalAlignment="Center" Width="174" RenderTransformOrigin="0.518,0.033" Height="40" Background="White"/>
+        <Button x:Name="button_Open" Content="Відкрити файл" HorizontalAlignment="Left" Margin="145,86,0,443" VerticalAlignment="Center" Width="174" RenderTransformOrigin="0.518,0.033" Height="40" Click="button_Open_Click" Background="White"/>
+        <ListBox x:Name="outputList" HorizontalAlignment="Left" Height="440" Margin="344,86,0,0" VerticalAlignment="Top" Width="537"/>
+        <Label x:Name="label_Copy" Content="Вихідний файл" HorizontalAlignment="Left" Margin="344,10,0,0" VerticalAlignment="Top" Width="100" HorizontalContentAlignment="Center"/>
+        <ComboBox x:Name="comboBoxIn" HorizontalAlignment="Left" Margin="145,274,0,0" VerticalAlignment="Top" Width="174" Height="40">
+            <ComboBox.Background>
+                <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                    <GradientStop Color="#FFF0F0F0" Offset="0"/>
+                    <GradientStop Color="White" Offset="1"/>
+                </LinearGradientBrush>
+            </ComboBox.Background>
+        </ComboBox>
+        <Button x:Name="buttonBFS" Content="Виконати обхід вшир" HorizontalAlignment="Left" Margin="145,203,0,0" VerticalAlignment="Top" Width="174" Height="40" Click="buttonBFS_Click" Background="White"/>
+        <Button x:Name="buttonBFS_Copy" Content="Виконати обхід вглиб" HorizontalAlignment="Left" Margin="145,349,0,0" VerticalAlignment="Top" Width="174" Height="40" Click="buttonBFS_Copy_Click" Background="White"/>
+        <Button x:Name="buttonSort" Content="Топологічне сортування" HorizontalAlignment="Left" Margin="145,147,0,0" VerticalAlignment="Top" Width="174" Height="32" Click="buttonSort_Click" Background="White"/>
+        <Button x:Name="buttonComponents" Content="Компоненти зв'язності" HorizontalAlignment="Left" Margin="145,419,0,0" VerticalAlignment="Top" Width="174" Height="32" Click="buttonComponents_Click" Background="White"/>
+        <CheckBox x:Name="weightBox" Content="З вагою ребра" HorizontalAlignment="Left" Margin="919,99,0,0" VerticalAlignment="Top" Width="133" Checked="weightBox_Checked"/>
+        <ComboBox x:Name="FirstBox" HorizontalAlignment="Left" Margin="919,165,0,0" VerticalAlignment="Top" Width="77" Height="42"/>
+        <ComboBox x:Name="SecondBox" HorizontalAlignment="Left" Margin="1088,165,0,0" VerticalAlignment="Top" Width="77" Height="42"/>
+        <Label x:Name="label1" Content="Початкова" HorizontalAlignment="Left" Margin="919,129,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.955,1.585"/>
+        <Label x:Name="label1_Copy" Content="Кінцева" HorizontalAlignment="Left" Margin="1088,129,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.955,1.585"/>
+        <Button x:Name="button_Deck2" Content="Найкоротша відстань для двох за Флойдом" HorizontalAlignment="Left" Margin="919,248,0,0" VerticalAlignment="Top" Width="246" Height="42" Background="White" Click="button_Deck2_Click"/>
+        <Button x:Name="button_DeckAll" Content="Найкоротша відстань для всіх" HorizontalAlignment="Left" Margin="919,295,0,0" VerticalAlignment="Top" Width="246" Height="42" Background="White" Click="button_DeckAll_Click"/>
+        <Button x:Name="button__Floyd" Content="Найкоротша відстань за Флойдом" HorizontalAlignment="Left" Margin="919,337,0,0" VerticalAlignment="Top" Width="246" Height="42" Background="White" Click="button__Floyd_Click"/>
+        <Button x:Name="button__EylirCircle" Content="Цикл Ейлера" HorizontalAlignment="Left" Margin="919,467,0,0" VerticalAlignment="Top" Width="246" Height="42" Background="White" Click="button__EylirCircle_Click"/>
+        <Button x:Name="button__Johnson" Content="Найкоротша відстань за Джонсоном" HorizontalAlignment="Left" Margin="919,379,0,0" VerticalAlignment="Top" Width="246" Height="42" Background="White" Click="button__Johnson_Click"/>
+        <Button x:Name="button__Johnson_Co" Content="Найкоротша відстань за Джонсо для двох" HorizontalAlignment="Left" Margin="919,420,0,0" VerticalAlignment="Top" Width="246" Height="42" Background="White" Click="button__Johnson_Co_Click"/>
     </Grid>
 </Window>
