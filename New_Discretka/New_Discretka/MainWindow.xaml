@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Labs"
         mc:Ignorable="d"
-        Title="Лабораторна робота №4" Height="600" Width="1200">
+        Title="Лабораторні роботи" Height="600" Width="1200" Icon="C:\Users\wppre\Source\Repos\New_Discretka\New_Discretka\favicon.ico">
     <Grid Background="White">
         <ListBox x:Name="inputBox" Width="100" Height="449" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,80,0,27" SelectionChanged="input_SelectionChanged" />
         <Label x:Name="label" Content="Вхідний файл" HorizontalAlignment="Left" Margin="20,10,0,0" VerticalAlignment="Top" Width="100" HorizontalContentAlignment="Center"/>
