@@ -27,7 +27,14 @@ namespace Labs
 
         public MainWindow()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch(Exception e)
+            {
+
+            }
         }
 
         private void input_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -112,6 +119,11 @@ namespace Labs
         private void button__Johnson_Co_Click(object sender, RoutedEventArgs e)
         {
             inputClass.Johnson(FirstBox.SelectedIndex, SecondBox.SelectedIndex, false);
+        }
+
+        private void button_Gamilton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
 
         private void weightBox_Checked(object sender, RoutedEventArgs e)
