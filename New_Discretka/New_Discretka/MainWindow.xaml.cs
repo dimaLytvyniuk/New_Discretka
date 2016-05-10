@@ -108,7 +108,7 @@ namespace Labs
         private void button__EylirCircle_Click(object sender, RoutedEventArgs e)
         {
             inputClass.Eylir_Circle();
-            inputClass.Gamilton();
+            
         }
 
         private void button__Johnson_Click(object sender, RoutedEventArgs e)
@@ -123,7 +123,7 @@ namespace Labs
 
         private void button_Gamilton_Click(object sender, RoutedEventArgs e)
         {
-
+            inputClass.Gamilton();
         }
 
         private void weightBox_Checked(object sender, RoutedEventArgs e)

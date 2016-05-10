@@ -57,7 +57,7 @@
             </TabItem>
             <TabItem Header="11th Laba">
                 <Grid Background="White">
-                    <Button x:Name="button_Gamilton" Content="Найкоротша відстань для двох за Флойдом" Background="White" Click="button_Gamilton_Click" Margin="22,26,22,384" Width="265" UseLayoutRounding="False" Height="42"/>
+                    <Button x:Name="button_Gamilton" Content="Гамільтонів цикл та шлях" Background="White" Click="button_Gamilton_Click" Margin="22,26,22,384" Width="265" UseLayoutRounding="False" Height="42"/>
                 </Grid>
 
             </TabItem>

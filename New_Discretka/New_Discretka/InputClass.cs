@@ -31,6 +31,7 @@ namespace Labs
         Dictionary<string, int> ToWeight = new Dictionary<string, int>();
         bool fl,izo=false;
         int[] sorting;
+        Queue<int>[] sumigAll;
 
         public InputClass(string name,ListBox box,ListBox box2,ComboBox combo,ComboBox combo1,ComboBox combo2)
         {
@@ -261,6 +262,7 @@ namespace Labs
             sumig = new int[n, n];
             sorting = new int[n];
             sumigT = new int[n, n];
+            sumigAll = new Queue<int>[n];
 
             for (int i = 0; i < n; i++)
                 sorting[i] = -1;
@@ -278,11 +280,16 @@ namespace Labs
             {
                 for (int j = 0; j < n; j++)
                     sumig[i, j] = 0;
+
+                sumigAll[i] = new Queue<int>();
             }
 
             for (int i = 0; i < m; i++)
             {
                 sumig[mainMassive[i + 1, 0] - 1, mainMassive[i + 1, 1] - 1] = 1;
+
+                sumigAll[mainMassive[i + 1, 0] - 1].Enqueue((mainMassive[i + 1, 1] - 1));
+
                 sumigT[mainMassive[i + 1, 1] - 1, mainMassive[i + 1, 0] - 1] = 1;
             }
 
@@ -2451,86 +2458,107 @@ namespace Labs
 
         }
 
-        public void Gamilton()
+        private bool GamiltonToOne(int unit)
         {
-            CreateStepen();
+            Stack<int> q = new Stack<int>();
+            int[] road;
+            bool res = false,
+                fl1;
 
-            List<int> Circles = new List<int>();
-            bool[] used = new bool[n];
-            int k = 0, ver = 0;
-            bool fl = true,
-                fl1 = true;
+            Queue<int>[] sumigThis =new Queue<int>[n];
 
-            for(int i=0;i< n && fl1==true;i++)
+
+            int x, y=0;
+
+            for (int i = 0; i < n; i++)
+                sumigThis[i] = new Queue<int>();
+
+            q.Push(unit);
+
+            List<int> prom= sumigAll[unit].ToList();
+
+            for(int i=0;i<prom.Count;i++)
             {
-                Circles = new List<int>();
-                k = 0;
-                fl = true;
+                sumigThis[unit].Enqueue(prom[i]);
+            }
+            
 
-                for(int j=0;j< n;j++)
+            while(q.Count!=0)
+            {
+                x = q.Peek();
+
+                if (sumigThis[x].Count!=0)
                 {
-                    used[j] = false;
-                }
-
-                ver = i;
-
-                while(fl)
-                {
-                    fl = false;
-
-                    for(int j=0;j< n;j++)
+                    y = sumigThis[x].Dequeue();
+                    if (!q.Contains(y))
                     {
-                        if(!used[j])
+                        q.Push(y);
+
+                        prom = sumigAll[y].ToList();
+
+                        for (int i = 0; i < prom.Count; i++)
                         {
-                            if(sumig[ver,j]==1)
+                            sumigThis[y].Enqueue(prom[i]);
+                        }
+
+                        if (q.Count == n)
+                        {
+                            res = true;
+
+                            if (sumig[y, unit] == 1)
+                                fl1 = true;
+                            else
+                                fl1 = false;
+
+                            road = q.ToArray();
+
+                            if (fl1)
                             {
-                                Circles.Add(j + 1);
-                                ver = j;
-                                used[j] = true;
-                                fl = true;
+                                outList.Items.Add("\nГамільтонів цикл\n");
                             }
+                            else
+                                outList.Items.Add("\nГамільтонів маршрут\n");
+
+                            string s = "";
+
+                            for (int i = n - 1; i >= 0; i--)
+                                s += FormativeOut(road[i]+1);
+
+                            if (fl1)
+                                s += FormativeOut(unit + 1);
+
+                            outList.Items.Add(s);
+
+                            break;
                         }
                     }
-
-                    if (Circles.Count == n)
+                    else
                     {
-                        fl1 = false;
-                        fl = false;
+                        q.Pop();
                     }
-
                 }
-            }
-
-            if(!fl1)
-            {
-                string str = "";
-
-                for(int i=0;i< n;i++)
-                {
-                    if (stepenVhodu[i] % 2 == 1)
-                        k++;
-                }
-
-                if(k == 2)
-                    outList.Items.Add("\nГамільтовий шлях\n");
                 else
-                    outList.Items.Add("\nГамільтовий цикл\n");
-
-                for (int i = 0; i < n; i++)
-                {
-                    str += FormativeOut(Circles[i]);
-                }
-
-                outList.Items.Add(str);
+                    q.Pop();
             }
-            else
-            {
-                outList.Items.Add("Циклів і шляху теж");
-            }
+
+            return res;
         }
 
+        public void Gamilton()
+        {
+            bool res=false;
 
+            for(int i=0;i< n;i++)
+            {
+                res = GamiltonToOne(i);
 
+                if (res)
+                    break;
+            }
+
+            if(!res)
+                outList.Items.Add("\nНі циклу, ні маршруту не існує");
+        }
     }
 
 
