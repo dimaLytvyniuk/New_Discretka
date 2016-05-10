@@ -2642,12 +2642,11 @@ namespace Labs
             return res;
         }
 
-        private double GamiltonForComi(int unit, List<int[]> res)
+        private double GamiltonForComi(int unit, int[] road)
         {
 
             Stack<int> q = new Stack<int>();
             Stack<double> prev = new Stack<double>();
-            int[] road;
 
             bool fl1,
                 resFl = false;
@@ -2701,8 +2700,6 @@ namespace Labs
 
                             fl1 = true;
 
-                            res.Add(road);
-
                             break;
                         }
                     }
@@ -2720,6 +2717,67 @@ namespace Labs
             }
 
             return length;
+        }
+
+        public void CreateComi()
+        {
+            List<int[]> marshs = new List<int[]>(),
+                res = new List<int[]>();
+            string s = "";
+            int[] prom=new int[n];
+            double length = Int32.MaxValue,
+                typ;
+
+            for(int i=0;i< n;i++)
+            {
+                typ = GamiltonForComi(0, prom);
+
+                if (length>typ)
+                {
+                    if(length==typ)
+                    {
+                        marshs.Add(prom);
+                    }
+                    else
+                    {
+                        length = typ;
+                        marshs = new List<int[]>();
+                        marshs.Add(prom);
+                    }
+                }
+            }
+
+            for(int i=0;i<marshs.Count;i++)
+            {
+                prom = marshs[i].ToArray();
+
+                res[i] = new int[n];
+
+                int l = 0;
+
+                for(int j=n-1;j>=0;j--)
+                {
+                    res[i][l] = prom[j];
+                    l++;
+                }
+            }
+
+            outList.Items.Add("\nЗадача комівояжера\n");
+
+            for(int i=0;i<res.Count;i++)
+            {
+
+                for(int j=0;j< n;j++)
+                {
+                    s += FormativeOut(res[i][j]);
+                }
+
+                outList.Items.Add(s);
+
+                s = "";
+            }
+
+            outList.Items.Add("\nДовжина= " + length);
         }
     }
 
