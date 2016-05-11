@@ -29,6 +29,7 @@ namespace Labs
         List<string> circle=new List<string> {};
         List<string> circle1 = new List<string> { };
         Dictionary<string, int> ToWeight = new Dictionary<string, int>();
+        Dictionary<string, double> ToWeightComi = new Dictionary<string, double>();
         bool fl,izo=false;
         int[] sorting;
         Queue<int>[] sumigAll;
@@ -143,6 +144,8 @@ namespace Labs
             }
         }
 
+       
+
         private int[] Cutting(string input)
         {
             int[] res = new int[2];
@@ -191,6 +194,71 @@ namespace Labs
             outList.Items.Add("");
            
         }
+
+
+        public void CreateMassComi()
+        {
+            int[] k;
+            string str = "",
+                key = "";
+            double weight =0;
+
+            sumigAll = new Queue<int>[n];
+
+            using (StreamReader reader = new StreamReader(fileName))
+            {
+                str = reader.ReadLine();
+                k = Cutting(str);
+
+                n = k[0];
+                m = n+ (int)((Math.Pow(n,2)-3* n)/2);
+
+
+                mainMassive = new int[n + 1, 2];
+                mainMassive[0, 0] = n;
+                mainMassive[0, 1] = m;
+
+
+                int j = 0;
+
+                while ((str = reader.ReadLine()) != null)
+                {
+                    j++;
+                    k = Cutting(str);
+                    mainMassive[j, 0] = k[0];
+                    mainMassive[j, 1] = k[1];
+                }
+
+                for (int i = 0; i < n + 1; i++)
+                {
+                    thisList.Items.Add(mainMassive[i, 0] + " " + mainMassive[i, 1] + "\n");
+                }
+            }
+
+
+            for(int i=0;i< n;i++)
+            {
+                 for(int j=0;j< n;j++)
+                {
+                    if (j != i)
+                        sumigAll[i].Enqueue(j);
+                }
+            }
+
+            //ToWeight.Add(key, k[2]);
+
+            for(int i=0;i< n;i++)
+            {
+                for(int j=0;j< n;j++)
+                {
+                    key = i + " " + j;
+                    weight = RetWeight(i, j);
+                    ToWeightComi.Add(key, weight);
+                }
+            }
+
+        }
+
 
         private void CreateIncident(bool fl1)
         {
@@ -254,6 +322,11 @@ namespace Labs
                     }
                 }
             }
+
+        }
+
+        private void CreateForComi()
+        {
 
         }
 
@@ -2558,6 +2631,95 @@ namespace Labs
 
             if(!res)
                 outList.Items.Add("\nНі циклу, ні маршруту не існує");
+        }
+
+        public double RetWeight(int start,int finish)
+        {
+            double res = 0;
+
+            res = Math.Sqrt(Math.Pow(mainMassive[finish + 1, 0] - mainMassive[start + 1, 0], 2) + Math.Pow(mainMassive[finish + 1, 1] - mainMassive[start + 1, 1], 2));
+
+            return res;
+        }
+
+        private double GamiltonForComi(int unit, List<int[]> res)
+        {
+
+            Stack<int> q = new Stack<int>();
+            Stack<double> prev = new Stack<double>();
+            int[] road;
+
+            bool fl1,
+                resFl = false;
+            double length = 0;
+            string key = "";
+
+            Queue <int>[] sumigThis = new Queue<int>[n];
+
+            int x, y = 0;
+
+            for (int i = 0; i < n; i++)
+                sumigThis[i] = new Queue<int>();
+
+            q.Push(unit);
+
+            List<int> prom = sumigAll[unit].ToList();
+
+            for (int i = 0; i < prom.Count; i++)
+            {
+                sumigThis[unit].Enqueue(prom[i]);
+            }
+
+
+            while (q.Count != 0)
+            {
+                x = q.Peek();
+
+                if (sumigThis[x].Count != 0)
+                {
+                    y = sumigThis[x].Dequeue();
+                    if (!q.Contains(y))
+                    {
+                        key = x + " " + y;
+                        prev.Push(ToWeightComi[key]);
+                        length += prev.Peek();
+
+                        q.Push(y);
+
+
+                        prom = sumigAll[y].ToList();
+
+                        for (int i = 0; i < prom.Count; i++)
+                        {
+                            sumigThis[y].Enqueue(prom[i]);
+                        }
+
+                        if (q.Count == n)
+                        {
+
+                            road = q.ToArray();
+
+                            fl1 = true;
+
+                            res.Add(road);
+
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        q.Pop();
+                        length -= prev.Pop();
+                    }
+                }
+                else
+                {
+                    q.Pop();
+                    length -= prev.Pop();
+                }
+            }
+
+            return length;
         }
     }
 
