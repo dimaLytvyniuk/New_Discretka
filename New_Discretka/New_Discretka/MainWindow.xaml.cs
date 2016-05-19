@@ -23,7 +23,7 @@ namespace Labs
     public partial class MainWindow : Window
     {
         InputClass inputClass;
-        bool open, weigh, comi;
+        bool open, weigh, comi, orienatation;
 
         public MainWindow()
         {
@@ -62,7 +62,10 @@ namespace Labs
                     else
                         inputClass.Output();
 
-                    inputClass.OutputMassive(true);
+                    if (orienatation)
+                        inputClass.OutputMassive(false);
+                    else
+                        inputClass.OutputMassive(true);
 
                     open = true;
                 }
@@ -135,6 +138,16 @@ namespace Labs
         private void button_Comi_Click(object sender, RoutedEventArgs e)
         {
             inputClass.NewComi();
+        }
+
+        private void checkBox_Checked(object sender, RoutedEventArgs e)
+        {
+            orienatation = true;
+        }
+
+        private void button_Planar_Click(object sender, RoutedEventArgs e)
+        {
+            inputClass.PlanarGraph();
         }
 
         private void comiBox_Checked(object sender, RoutedEventArgs e)

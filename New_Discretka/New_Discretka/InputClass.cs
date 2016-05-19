@@ -2328,7 +2328,8 @@ namespace Labs
 
                 for (int j = 0; j < m; j++)
                 {
-                    if (incident[i, j] == 1 || incident[i, j] == -1)
+                    //if (incident[i, j] == 1 || incident[i, j] == -1)
+                    if(incident[i,j]==1)
                         stepenVhodu[i]++;
                 }
             }
@@ -2989,6 +2990,29 @@ namespace Labs
 
             outList.Items.Add("\nМаршрут:\n");
             outList.Items.Add(print);
+        }
+
+        public void PlanarGraph()
+        {
+            CreateStepen();
+
+            int step3 = 0,
+                step2 = 0;
+
+            for(int i=0;i< n;i++)
+            {
+                if (stepenVhodu[i] > 3)
+                    step3++;
+                if (stepenVhodu[i] > 2)
+                    step2++;
+            }
+
+            outList.Items.Add("\nПланарність");
+
+            if (step2 > 5 || step3 > 4)
+                outList.Items.Add("\nГраф не планарний");
+            else
+                outList.Items.Add("\nГраф планарний");
         }
     }
 
