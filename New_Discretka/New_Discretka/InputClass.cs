@@ -18,23 +18,24 @@ namespace Labs
     class InputClass
     {
         public string fileName { get; private set; }
-       
+
         private ListBox thisList, outList;
-        private ComboBox incombo,startCombo,finishCombo;
-        private int n = 0, m = 0, D=0,r=0;
-        private int[,] mainMassive, incident, sumig,incidentT,sumigT; 
-        private int[] stepenVhodu,excntri,center,counts,countsT,weight;
+        private ComboBox incombo, startCombo, finishCombo;
+        private int n = 0, m = 0, D = 0, r = 0;
+        private int[,] mainMassive, incident, sumig, incidentT, sumigT;
+        private int[] stepenVhodu, excntri, center, counts, countsT, weight;
         //DataGridView dataGr;
-        private int[,] geodez,vidstan,dosiazhnosti;
-        List<string> circle=new List<string> {};
+        private int[,] geodez, vidstan, dosiazhnosti;
+        List<string> circle = new List<string> { };
         List<string> circle1 = new List<string> { };
         Dictionary<string, int> ToWeight = new Dictionary<string, int>();
         Dictionary<string, double> ToWeightComi = new Dictionary<string, double>();
-        bool fl,izo=false;
+        bool fl, izo = false;
         int[] sorting;
         Queue<int>[] sumigAll;
+        string forComi = "";
 
-        public InputClass(string name,ListBox box,ListBox box2,ComboBox combo,ComboBox combo1,ComboBox combo2)
+        public InputClass(string name, ListBox box, ListBox box2, ComboBox combo, ComboBox combo1, ComboBox combo2)
         {
             fileName = name;
             thisList = box;
@@ -46,7 +47,7 @@ namespace Labs
 
         public void Output()
         {
-            
+
             int[] k;
             string str = "";
 
@@ -57,16 +58,16 @@ namespace Labs
 
                 n = k[0];
                 m = k[1];
-            
 
-            mainMassive = new int[m + 1, 2];
-            mainMassive[0, 0] = n;
-            mainMassive[0, 1] = m;
 
-                
+                mainMassive = new int[m + 1, 2];
+                mainMassive[0, 0] = n;
+                mainMassive[0, 1] = m;
+
+
                 int j = 0;
 
-                while ((str=reader.ReadLine()) !=null)
+                while ((str = reader.ReadLine()) != null)
                 {
                     j++;
                     k = Cutting(str);
@@ -74,14 +75,14 @@ namespace Labs
                     mainMassive[j, 1] = k[1];
                 }
 
-                for (int i = 0; i < m+1; i++)
+                for (int i = 0; i < m + 1; i++)
                 {
                     thisList.Items.Add(mainMassive[i, 0] + " " + mainMassive[i, 1] + "\n");
                 }
-             
+
             }
 
-            for(int i=0;i< n;i++)
+            for (int i = 0; i < n; i++)
             {
                 incombo.Items.Add(i + 1);
             }
@@ -99,7 +100,7 @@ namespace Labs
             using (StreamReader reader = new StreamReader(fileName))
             {
                 str = reader.ReadLine();
-                k = Cutting(str,true);
+                k = Cutting(str, true);
 
                 n = k[0];
                 m = k[1];
@@ -117,7 +118,7 @@ namespace Labs
                 while ((str = reader.ReadLine()) != null)
                 {
                     j++;
-                    k = Cutting(str,true);
+                    k = Cutting(str, true);
                     toDict[0] = k[0];
                     toDict[1] = k[1];
                     mainMassive[j, 0] = toDict[0];
@@ -126,12 +127,12 @@ namespace Labs
                     mainMassive[j, 2] = k[2];
                     key = k[0] + " " + k[1];
 
-                    ToWeight.Add(key,k[2]);
+                    ToWeight.Add(key, k[2]);
                 }
 
                 for (int i = 0; i < m + 1; i++)
                 {
-                    thisList.Items.Add(mainMassive[i, 0] + "  " + mainMassive[i, 1] + "  " + mainMassive[i,2] + "\n");
+                    thisList.Items.Add(mainMassive[i, 0] + "  " + mainMassive[i, 1] + "  " + mainMassive[i, 2] + "\n");
                 }
 
             }
@@ -144,7 +145,7 @@ namespace Labs
             }
         }
 
-       
+
 
         private int[] Cutting(string input)
         {
@@ -155,23 +156,23 @@ namespace Labs
              s2 = input.Substring(indexProb + 1);
 
             res[0] = Convert.ToInt32(s1);
-            res[1]= Convert.ToInt32(s2);
+            res[1] = Convert.ToInt32(s2);
 
             return res;
         }
 
-        private int[] Cutting(string input,bool fl1)
+        private int[] Cutting(string input, bool fl1)
         {
             int[] res = new int[3];
             int indexProb = input.LastIndexOf(' ');
-            string[] words = input.Split(' ') ;
+            string[] words = input.Split(' ');
 
 
             res[0] = Convert.ToInt32(words[0]);
             res[1] = Convert.ToInt32(words[1]);
 
-            if(words.Length>2)
-            res[2]= Convert.ToInt32(words[2]);
+            if (words.Length > 2)
+                res[2] = Convert.ToInt32(words[2]);
 
             return res;
         }
@@ -192,7 +193,7 @@ namespace Labs
             }
 
             outList.Items.Add("");
-           
+
         }
 
 
@@ -201,9 +202,9 @@ namespace Labs
             int[] k;
             string str = "",
                 key = "";
-            double weight =0;
+            double weight = 0;
 
-            sumigAll = new Queue<int>[n];
+
 
             using (StreamReader reader = new StreamReader(fileName))
             {
@@ -211,7 +212,7 @@ namespace Labs
                 k = Cutting(str);
 
                 n = k[0];
-                m = n+ (int)((Math.Pow(n,2)-3* n)/2);
+                m = n + (int)((Math.Pow(n, 2) - 3 * n) / 2);
 
 
                 mainMassive = new int[n + 1, 2];
@@ -236,9 +237,13 @@ namespace Labs
             }
 
 
-            for(int i=0;i< n;i++)
+            sumigAll = new Queue<int>[n];
+
+            for (int i = 0; i < n; i++)
             {
-                 for(int j=0;j< n;j++)
+                sumigAll[i] = new Queue<int>();
+
+                for (int j = 0; j < n; j++)
                 {
                     if (j != i)
                         sumigAll[i].Enqueue(j);
@@ -247,9 +252,9 @@ namespace Labs
 
             //ToWeight.Add(key, k[2]);
 
-            for(int i=0;i< n;i++)
+            for (int i = 0; i < n; i++)
             {
-                for(int j=0;j< n;j++)
+                for (int j = 0; j < n; j++)
                 {
                     key = i + " " + j;
                     weight = RetWeight(i, j);
@@ -299,9 +304,9 @@ namespace Labs
 
             }
 
-            for(int i=0;i< n;i++)
+            for (int i = 0; i < n; i++)
             {
-                for(int j=0;j< m;j++)
+                for (int j = 0; j < m; j++)
                 {
                     incidentT[i, j] = 0;
                 }
@@ -311,7 +316,7 @@ namespace Labs
             {
                 for (int j = 0; j < m; j++)
                 {
-                    if(incident[i,j]==1)
+                    if (incident[i, j] == 1)
                     {
                         incidentT[i, j] = -1;
                     }
@@ -389,14 +394,14 @@ namespace Labs
             {
                 for (int j = 0; j < m; j++)
                 {
-                        if ((mainMassive[j + 1, 0] == i + 1) || (mainMassive[j + 1, 1] == i + 1))
-                            incident[i, j] =1;
+                    if ((mainMassive[j + 1, 0] == i + 1) || (mainMassive[j + 1, 1] == i + 1))
+                        incident[i, j] = 1;
 
-                        else
-                        {
-                                incident[i, j] = 0;
-                        }
-                    
+                    else
+                    {
+                        incident[i, j] = 0;
+                    }
+
 
                     s += FormativeOut(incident[i, j]);
 
@@ -449,15 +454,15 @@ namespace Labs
             string s = String.Format("{0,4}", data) + "  ";
             return s;
         }
-        
+
         public void Output(string name)
         {
             using (StreamWriter writer = new StreamWriter(name))
             {
-                string[] d=new string[outList.Items.Count] ;
+                string[] d = new string[outList.Items.Count];
                 outList.Items.CopyTo(d, 0);
 
-                for(int i=0;i< outList.Items.Count;i++)
+                for (int i = 0; i < outList.Items.Count; i++)
                 {
                     writer.WriteLine(d[i]);
                 }
@@ -495,10 +500,10 @@ namespace Labs
             outList.Items.Add("Cтепені вершин");
             outList.Items.Add("");
 
-            for(int i=0;i< n;i++)
-                outList.Items.Add("    Cтепінь вершини "+ (i+1) + " = " +stepenVhodu[i]);
-            
-            while ((flVhodu==true) &&(j< n-1))
+            for (int i = 0; i < n; i++)
+                outList.Items.Add("    Cтепінь вершини " + (i + 1) + " = " + stepenVhodu[i]);
+
+            while ((flVhodu == true) && (j < n - 1))
             {
                 if (stepenVhodu[j] != stepenVhodu[j + 1])
                     flVhodu = false;
@@ -507,12 +512,12 @@ namespace Labs
             }
 
             j = 0;
-            
-                if(flVhodu==true)
-                outList.Items.Add("Граф однорідний cтепінь графу= "+ stepenVhodu[0]);
-                else
-                outList.Items.Add("Граф не однорідний");       
-            
+
+            if (flVhodu == true)
+                outList.Items.Add("Граф однорідний cтепінь графу= " + stepenVhodu[0]);
+            else
+                outList.Items.Add("Граф не однорідний");
+
 
             outList.Items.Add("");
             outList.Items.Add("");
@@ -522,7 +527,7 @@ namespace Labs
         {
             string sIzo = "Ізольовані вершини ";
             string sVyso = "Висячі вершини ";
-           
+
             for (int i = 0; i < n; i++)
             {
                 if (stepenVhodu[i] == 1)
@@ -559,24 +564,24 @@ namespace Labs
 
         private void CreateGeodez()
         {
-            geodez = new int[n,n];
+            geodez = new int[n, n];
             CreateCount();
 
-            for(int i=0;i< n;i++)
+            for (int i = 0; i < n; i++)
             {
-                for(int j=0;j< n;j++)
+                for (int j = 0; j < n; j++)
                 {
                     if (i == j)
                         geodez[i, j] = 0;
                     else
-                    geodez[i,j] = ValueGeodez(i+1,j+1);
+                        geodez[i, j] = ValueGeodez(i + 1, j + 1);
                 }
             }
-        } 
+        }
 
-        private int searchSumig(int ver,int k)
+        private int searchSumig(int ver, int k)
         {
-            int ret = 0,j=0;
+            int ret = 0, j = 0;
 
             for (int i = 0; i < n; i++)
             {
@@ -597,9 +602,9 @@ namespace Labs
         {
             int y = 0;
 
-            for(int i=0;i< n;i++)
+            for (int i = 0; i < n; i++)
             {
-                if (sumig[ver-1, i] == 1)
+                if (sumig[ver - 1, i] == 1)
                     y++;
             }
 
@@ -647,7 +652,7 @@ namespace Labs
             }
             else
             {
-                for (int i = 0; i < n+1; i++)
+                for (int i = 0; i < n + 1; i++)
                 {
                     if (previousVer[i] != 0)
                     {
@@ -660,7 +665,7 @@ namespace Labs
                         fl = false;
                 }
 
-                previousVer[cou]=ver;
+                previousVer[cou] = ver;
 
                 if ((count == 0) || (ver == ver1) || (fl == false))
                 {
@@ -675,9 +680,9 @@ namespace Labs
                         l[i]++;
                         l[i] = ToCreatePromig(ver, ver2, previousVer, i, l[i]);
 
-                        if(cou!=n)
-                        for (int j = cou+1; j < n + 1; j++)
-                            previousVer[j] = 0;
+                        if (cou != n)
+                            for (int j = cou + 1; j < n + 1; j++)
+                                previousVer[j] = 0;
 
                         if (l[i] == 0)
                             koef++;
@@ -711,10 +716,10 @@ namespace Labs
 
         private int ValueGeodez(int ver1, int ver2)
         {
-            int count = counts[ver1-1],min=0,koef=0;
+            int count = counts[ver1 - 1], min = 0, koef = 0;
             int[] values = new int[count];
-            int[] previos = new int[n+1];
-            
+            int[] previos = new int[n + 1];
+
 
             if (count == 0)
                 return 0;
@@ -722,13 +727,13 @@ namespace Labs
             {
                 for (int i = 0; i < count; i++)
                 {
-                    for (int p = 1; p < n+1; p++)
+                    for (int p = 1; p < n + 1; p++)
                         previos[p] = 0;
 
                     values[i] = 0;
                     previos[0] = ver1;
                     values[i] = ToCreatePromig(ver1, ver2, previos, i, values[i]);
-                    
+
 
                     if (values[i] == 0)
                         koef++;
@@ -749,13 +754,13 @@ namespace Labs
 
                     for (int i = 1; i < count; i++)
                     {
-                        if ((min > values[i]) && (values[i]!=0))
+                        if ((min > values[i]) && (values[i] != 0))
                             min = values[i];
                     }
 
                     return min;
                 }
-             }
+            }
         }
 
         public void OutputRadiusDiametr()
@@ -763,10 +768,10 @@ namespace Labs
             CreateExc();
             bool fl = true;
 
-            for(int i=0;i< n;i++)
+            for (int i = 0; i < n; i++)
             {
                 if (excntri[i] != 0)
-                { 
+                {
                     r = excntri[i];
                     D = excntri[i];
                 }
@@ -775,7 +780,7 @@ namespace Labs
                     fl = false;
 
             }
-             
+
             for (int i = 0; i < n; i++)
             {
                 if (fl == false)
@@ -785,7 +790,7 @@ namespace Labs
                     if ((r > excntri[i]) && (excntri[i] != 0))
                         r = excntri[i];
                 }
-         
+
                 if (D < excntri[i])
                     D = excntri[i];
             }
@@ -801,26 +806,26 @@ namespace Labs
             CreateGeodez();
             excntri = new int[n];
 
-            for(int i=0;i< n;i++ )
+            for (int i = 0; i < n; i++)
             {
                 excntri[i] = geodez[i, 0];
                 for (int j = 1; j < n; j++)
                     if (excntri[i] < geodez[i, j])
                         excntri[i] = geodez[i, j];
-                
+
             }
         }
 
         public void OutputCenter()
         {
             CreateExc();
-            
-            int min =0,j=0;
+
+            int min = 0, j = 0;
             string outStr = "Центральні вершини ";
 
-            for(int i=0;i< n;i++)
+            for (int i = 0; i < n; i++)
             {
-                if(excntri[i]!=0)
+                if (excntri[i] != 0)
                 {
                     min = excntri[i];
                     break;
@@ -828,13 +833,13 @@ namespace Labs
             }
 
 
-            for (int i=0;i< n;i++)
+            for (int i = 0; i < n; i++)
             {
-                if ((excntri[i]!=0) && (min > excntri[i]))
+                if ((excntri[i] != 0) && (min > excntri[i]))
                     min = excntri[i];
             }
 
-            for(int i=0;i< n;i++)
+            for (int i = 0; i < n; i++)
             {
                 if (excntri[i] == min)
                     j++;
@@ -848,8 +853,8 @@ namespace Labs
             {
                 if (excntri[i] == min)
                 {
-                    center[j]=i+1;
-                    if ((j+1) != center.Length)
+                    center[j] = i + 1;
+                    if ((j + 1) != center.Length)
                         outStr += center[j] + ", ";
                     else
                         outStr += center[j] + ";";
@@ -857,55 +862,55 @@ namespace Labs
                 }
 
             }
-            
-                
+
+
             outList.Items.Add(outStr);
-            
+
         }
 
         public void OutputYaruses()
         {
             int j = 0;
-            string outStr = "    Ярус ",s="";
+            string outStr = "    Ярус ", s = "";
             bool fl = false;
-            bool[,] flmassive = new bool[n,n];
+            bool[,] flmassive = new bool[n, n];
             bool[] flmass = new bool[n];
             int value = 0;
 
             outList.Items.Add("Яруси");
             outList.Items.Add("");
 
-            for (int i=0;i< n;i++)
+            for (int i = 0; i < n; i++)
             {
                 for (int y = 0; y < n; y++)
                     flmass[y] = true;
 
-                for (int k=0;k< n;k++)
+                for (int k = 0; k < n; k++)
                 {
-                    if ((flmass[k] == true) && (geodez[k,i]!=0))
+                    if ((flmass[k] == true) && (geodez[k, i] != 0))
                     {
-                        s="до вершини " +(i+1).ToString() + " :" + (k+1).ToString();
+                        s = "до вершини " + (i + 1).ToString() + " :" + (k + 1).ToString();
                         value = geodez[k, i];
 
                         for (int l = k + 1; l < n; l++)
                         {
-                            if (geodez[k,i] == geodez[l,i])
+                            if (geodez[k, i] == geodez[l, i])
                             {
                                 s += " ," + (l + 1).ToString();
-                                flmassive[l,k] = false;
+                                flmassive[l, k] = false;
                                 flmass[l] = false;
                             }
                         }
 
-                            outList.Items.Add(outStr + s + "  відстань " + value + ";" );
+                        outList.Items.Add(outStr + s + "  відстань " + value + ";");
 
                         s = "";
                         fl = false;
                     }
 
-                }  
+                }
             }
-                
+
         }
 
         private void CorrectGeodez()
@@ -913,11 +918,11 @@ namespace Labs
             CreateGeodez();
             vidstan = geodez;
 
-            for(int i=0;i< n;i++)
+            for (int i = 0; i < n; i++)
             {
-                for(int j=0;j< n;j++)
+                for (int j = 0; j < n; j++)
                 {
-                    if(((stepenVhodu[j]==0) ||(stepenVhodu[i]==0)) && (j != i))
+                    if (((stepenVhodu[j] == 0) || (stepenVhodu[i] == 0)) && (j != i))
                     {
                         vidstan[i, j] = -1;
                     }
@@ -932,10 +937,10 @@ namespace Labs
             string s = "";
 
             outList.Items.Add("Матриця відстаней\n");
-            
-            for(int i=0;i< n;i++)
+
+            for (int i = 0; i < n; i++)
             {
-                for(int j=0;j< n;j++)
+                for (int j = 0; j < n; j++)
                 {
                     if (vidstan[i, j] != -1)
                         s += FormativeOut(vidstan[i, j]);
@@ -956,9 +961,9 @@ namespace Labs
 
             dosiazhnosti = new int[n, n];
 
-            for(int i=0;i< n;i++)
+            for (int i = 0; i < n; i++)
             {
-                for(int j=0;j< n;j++)
+                for (int j = 0; j < n; j++)
                 {
                     if ((vidstan[i, j] != 0) && (vidstan[i, j] != -1))
                         dosiazhnosti[i, j] = 1;
@@ -980,7 +985,7 @@ namespace Labs
             {
                 for (int j = 0; j < n; j++)
                 {
-                        s += FormativeOut(dosiazhnosti[i, j]);
+                    s += FormativeOut(dosiazhnosti[i, j]);
                 }
 
                 outList.Items.Add(s);
@@ -990,7 +995,7 @@ namespace Labs
             outList.Items.Add("");
 
         }
-        
+
         public void OutputCircle()
         {
             ValueCircle();
@@ -1001,7 +1006,7 @@ namespace Labs
                 outList.Items.Add("Циклів нема");
             else
             {
-                foreach(string s in circle)
+                foreach (string s in circle)
                     outList.Items.Add(s);
             }
 
@@ -1014,24 +1019,24 @@ namespace Labs
             int count;
             int[] previos = new int[n + 1];
 
-            for (int i=0;i<n;i++)
+            for (int i = 0; i < n; i++)
             {
                 count = counts[i];
 
-                previos[0] = i+1;
+                previos[0] = i + 1;
 
                 for (int j = 0; j < count; j++)
                 {
                     for (int k = 1; k < n + 1; k++)
-                        previos[k]=0;
+                        previos[k] = 0;
 
-                    CreateCircle(i+1, previos, j);
+                    CreateCircle(i + 1, previos, j);
                 }
 
 
             }
         }
-        
+
         private void CreateCircle(int start, int[] previousVer, int k)
         {
             int ver = searchSumig(start, k), count = counts[ver - 1];
@@ -1090,12 +1095,12 @@ namespace Labs
                     }
                 }
             }
-        
-          }
+
+        }
 
         public void OutputTypeOfZviaz()
         {
-            bool strong=true,odnobichnyi = true;
+            bool strong = true, odnobichnyi = true;
 
             outList.Items.Add("");
             outList.Items.Add("Тип зв'язності графа");
@@ -1109,7 +1114,7 @@ namespace Labs
             {
                 for (int i = 0; ((i < n) && ((strong == true) || (odnobichnyi = true))); i++)
                 {
-                    for (int j = i + 1; ((j < n) && ((strong== true) || (odnobichnyi = true))); j++)
+                    for (int j = i + 1; ((j < n) && ((strong == true) || (odnobichnyi = true))); j++)
                     {
                         if ((dosiazhnosti[i, j] != 1) || (dosiazhnosti[j, i] != 1))
                         {
@@ -1121,7 +1126,7 @@ namespace Labs
                             odnobichnyi = false;
                         }
 
-                       
+
                     }
                 }
 
@@ -1135,27 +1140,27 @@ namespace Labs
                         outList.Items.Add("Граф слабкозв'язний");
                 }
             }
-            
+
         }
 
         public void CreateVWidth(int unit)
         {
-            List <string> res= new List<string>() { };
+            List<string> res = new List<string>() { };
 
-            Queue<int> q = new Queue<int>();  
+            Queue<int> q = new Queue<int>();
             int[] vmist;
             int[,] copy = new int[n, n];
             bool[] used = new bool[n];
             int[] BFS = new int[n];
             int[] vers = new int[n];
-            int k = 1,count=0;
+            int k = 1, count = 0;
             string str;
             CreateCount();
 
             for (int i = 0; i < n; i++)
                 vers[i] = 0;
 
-            for(int i=0;i< n;i++)
+            for (int i = 0; i < n; i++)
             {
                 for (int j = 0; j < n; j++)
                     copy[i, j] = 0;
@@ -1163,44 +1168,44 @@ namespace Labs
 
             BFS[unit] = k;
             k++;
-   
-            used[unit] = true;     
+
+            used[unit] = true;
 
             q.Enqueue(unit);
 
             outList.Items.Add("\nОбхід графа вшир");
-            res.Add (String.Format("{0,-20}{1,-20}{2,-20}", "Вершина", "BFS-номер", "Вміст черги"));
-            res.Add(String.Format("{0,-27}{1,-29}{2,-31}", (unit+1), BFS[unit], (q.Peek()+1)+ " "));
+            res.Add(String.Format("{0,-20}{1,-20}{2,-20}", "Вершина", "BFS-номер", "Вміст черги"));
+            res.Add(String.Format("{0,-27}{1,-29}{2,-31}", (unit + 1), BFS[unit], (q.Peek() + 1) + " "));
 
             while (q.Count != 0)
             {
                 unit = q.Peek();
-                count = counts[unit];              
-                str ="";
+                count = counts[unit];
+                str = "";
 
-                    for (int i = 0; i < n; i++)
+                for (int i = 0; i < n; i++)
+                {
+                    if ((sumig[unit, i] == 1) && (used[i] == false))
                     {
-                        if ((sumig[unit, i] == 1) && (used[i]==false))
-                        {
                         copy[unit, i] = sumig[unit, i];
-                                vers[unit]++;
-                                used[i] = true;
-                                q.Enqueue(i);
-                                BFS[i] = k;
-                                k+=1;
+                        vers[unit]++;
+                        used[i] = true;
+                        q.Enqueue(i);
+                        BFS[i] = k;
+                        k += 1;
 
-                            vmist = q.ToArray();
+                        vmist = q.ToArray();
 
-                            for (int j = 0; j < vmist.Length; j++)
-                            {
+                        for (int j = 0; j < vmist.Length; j++)
+                        {
 
-                                str += (vmist[j] + 1) + "  ";
-                            }
-
-                            res.Add(String.Format("{0,-27}{1,-29}{2,-31}", (vmist[vmist.Length-1] +1), BFS[vmist[vmist.Length - 1]], str));
-                            break;
+                            str += (vmist[j] + 1) + "  ";
                         }
-                        else
+
+                        res.Add(String.Format("{0,-27}{1,-29}{2,-31}", (vmist[vmist.Length - 1] + 1), BFS[vmist[vmist.Length - 1]], str));
+                        break;
+                    }
+                    else
                     {
                         if ((sumig[unit, i] == 1) && (used[i] == true) && (copy[unit, i] == 0))
                         {
@@ -1209,7 +1214,7 @@ namespace Labs
                         }
                     }
 
-                    }
+                }
 
                 if (vers[unit] == count)
                 {
@@ -1232,7 +1237,7 @@ namespace Labs
 
             }
 
-            for(int i=0;i<res.Count;i++)
+            for (int i = 0; i < res.Count; i++)
             {
                 outList.Items.Add(res[i]);
             }
@@ -1339,22 +1344,22 @@ namespace Labs
             }
 
         }
-        
-          private int[] VHeight(int unit)
-          {
-               List<string> res = new List<string>() { };
 
-              Stack<int> q = new Stack<int>();
-              Stack<int> ToOut = new Stack<int>();
-              int[] vmist;
-              int[,] copy = new int[n, n];
-              bool[] used = new bool[n];
-              int[] BFS = new int[n];
-              int[] vers = new int[n];
-              int[] output=new int[n];
-              int k = 1, count = 0;
-              string str;
-              CreateCount();
+        private int[] VHeight(int unit)
+        {
+            List<string> res = new List<string>() { };
+
+            Stack<int> q = new Stack<int>();
+            Stack<int> ToOut = new Stack<int>();
+            int[] vmist;
+            int[,] copy = new int[n, n];
+            bool[] used = new bool[n];
+            int[] BFS = new int[n];
+            int[] vers = new int[n];
+            int[] output = new int[n];
+            int k = 1, count = 0;
+            string str;
+            CreateCount();
 
             for (int i = 0; i < n; i++)
             {
@@ -1362,72 +1367,72 @@ namespace Labs
                 output[i] = -1;
             }
 
-              for (int i = 0; i < n; i++)
-              {
-                  for (int j = 0; j < n; j++)
-                      copy[i, j] = 0;
-              }
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < n; j++)
+                    copy[i, j] = 0;
+            }
 
-              BFS[unit] = k;
-              k++;
+            BFS[unit] = k;
+            k++;
 
-              used[unit] = true;     //массив, хранящий состояние вершины(посещали мы её или нет)
+            used[unit] = true;     //массив, хранящий состояние вершины(посещали мы её или нет)
 
-              q.Push(unit);
+            q.Push(unit);
 
-              while (q.Count != 0)
-              {
-                  unit = q.Peek();
-                  count = counts[unit];
-                  str = "";
+            while (q.Count != 0)
+            {
+                unit = q.Peek();
+                count = counts[unit];
+                str = "";
 
-                  for (int i = 0; i < n; i++)
-                  {
-                      if ((sumig[unit, i] == 1) && (used[i] == false))
-                      {
-                          copy[unit, i] = sumig[unit, i];
-                          vers[unit]++;
-                          used[i] = true;
-                          q.Push(i);
-                          BFS[i] = k;
-                          k += 1;
-                          break;
-                      }
-                      else
-                      {
-                          if ((sumig[unit, i] == 1) && (used[i] == true) && (copy[unit, i] == 0))
-                          {
-                              vers[unit]++;
-                              copy[unit, i] = 1;
-                          }
-                      }
+                for (int i = 0; i < n; i++)
+                {
+                    if ((sumig[unit, i] == 1) && (used[i] == false))
+                    {
+                        copy[unit, i] = sumig[unit, i];
+                        vers[unit]++;
+                        used[i] = true;
+                        q.Push(i);
+                        BFS[i] = k;
+                        k += 1;
+                        break;
+                    }
+                    else
+                    {
+                        if ((sumig[unit, i] == 1) && (used[i] == true) && (copy[unit, i] == 0))
+                        {
+                            vers[unit]++;
+                            copy[unit, i] = 1;
+                        }
+                    }
 
-                  }
+                }
 
-                  if (vers[q.Peek()] == counts[q.Peek()])
-                  {
-                      str = "";
+                if (vers[q.Peek()] == counts[q.Peek()])
+                {
+                    str = "";
 
-                      ToOut.Push(q.Pop());
-                  }
+                    ToOut.Push(q.Pop());
+                }
 
 
-              }
+            }
 
-              for (int i = 0; i < res.Count; i++)
-              {
-                  outList.Items.Add(res[i]);
-              }
+            for (int i = 0; i < res.Count; i++)
+            {
+                outList.Items.Add(res[i]);
+            }
 
-              if(ToOut.Count==n)
-              {
+            if (ToOut.Count == n)
+            {
                 for (int i = 0; i < n; i++)
                     output[i] = ToOut.Pop();
 
-              }
+            }
 
             return output;
-          }
+        }
 
 
         public void ToSort()
@@ -1469,7 +1474,7 @@ namespace Labs
 
             List<string> res = new List<string>() { };
             List<int> ToK = new List<int>();
-            List<List<int>> yop= new List<List<int>>();
+            List<List<int>> yop = new List<List<int>>();
             Stack<int> q = new Stack<int>();
             List<int> pr = new List<int>();
             Stack<int> ToOut = new Stack<int>();
@@ -1482,166 +1487,166 @@ namespace Labs
             int[] output = new int[n];
             int[] temp = new int[n];
             int[] tempT = new int[n];
-            int k = 0, count = 0, unit = 0,u=0;
-            string str="";
+            int k = 0, count = 0, unit = 0, u = 0;
+            string str = "";
             CreateCount();
 
 
 
-                ToK = new List<int>();
+            ToK = new List<int>();
 
-                for (int i = 0; i < n; i++)
+            for (int i = 0; i < n; i++)
+            {
+                vers[i] = 0;
+                used[i] = false;
+
+            }
+
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < n; j++)
+                    copy[i, j] = 0;
+            }
+
+
+
+
+            for (int l = 0; l < n; l++)
+            {
+
+                if ((k != n) && used[l] == false)
                 {
-                    vers[i] = 0;
-                    used[i] = false;
-    
-                }
+                    unit = l;
+                    used[unit] = true;
+                    k++;
+                    q.Push(unit);
 
-                for (int i = 0; i < n; i++)
-                {
-                    for (int j = 0; j < n; j++)
-                        copy[i, j] = 0;
-                }
-
-
-
-
-                for (int l = 0; l < n; l++)
-                {
-
-                    if ((k != n) && used[l] == false)
+                    while (q.Count != 0)
                     {
-                        unit = l;
-                        used[unit] = true;
-                        k++;
-                        q.Push(unit);
+                        unit = q.Peek();
+                        count = counts[unit];
 
-                        while (q.Count != 0)
+                        for (int i = 0; i < n; i++)
                         {
-                            unit = q.Peek();
-                            count = counts[unit];
-
-                            for (int i = 0; i < n; i++)
+                            if ((sumig[unit, i] == 1) && (used[i] == false))
                             {
-                                if ((sumig[unit, i] == 1) && (used[i] == false))
+                                copy[unit, i] = sumig[unit, i];
+                                vers[unit]++;
+                                used[i] = true;
+                                q.Push(i);
+                                k++;
+                                break;
+                            }
+                            else
+                            {
+                                if ((sumig[unit, i] == 1) && (used[i] == true) && (copy[unit, i] == 0))
                                 {
-                                    copy[unit, i] = sumig[unit, i];
                                     vers[unit]++;
-                                    used[i] = true;
-                                    q.Push(i);
-                                    k++;
-                                    break;
+                                    copy[unit, i] = 1;
                                 }
-                                else
-                                {
-                                    if ((sumig[unit, i] == 1) && (used[i] == true) && (copy[unit, i] == 0))
-                                    {
-                                        vers[unit]++;
-                                        copy[unit, i] = 1;
-                                    }
-                                }
-
-                            }
-
-                            if (vers[q.Peek()] == counts[q.Peek()])
-                            {
-                                u = q.Pop();
-                                ToK.Add(u);
-                            }
-
-
-                        }
-                    }
-                }
-
-
-
-                for (int i = 0; i < n; i++)
-                {
-                    used[i] = false;
-                    vers[i] = 0;
-
-                    for (int j = 0; j < n; j++)
-                        copy[i, j] = 0;
-                }
-
-
-                k = 0;
-
-                for (int l = 0; l < ToK.Count; l++)
-                {
-                    if (used[ToK[ToK.Count - l - 1]] == false)
-                    {
-                        unit = ToK[ToK.Count - l - 1];
-                        q.Push(unit);
-                        used[unit] = true;
-
-                        while (q.Count != 0)
-                        {
-                            unit = q.Peek();
-                            count = countsT[unit];
-
-                            for (int i = 0; i < n; i++)
-                            {
-                                if ((sumigT[unit, i] == 1) && (used[i] == false))
-                                {
-                                    copy[unit, i] = sumigT[unit, i];
-                                    vers[unit]++;
-                                    used[i] = true;
-                                    q.Push(i);
-                                    k++;
-                                    break;
-                                }
-                                else
-                                {
-                                    if ((sumigT[unit, i] == 1) && (used[i] == true) && (copy[unit, i] == 0))
-                                    {
-                                        vers[unit]++;
-                                        copy[unit, i] = 1;
-                                    }
-                                }
-
-
-                            }
-
-                            if (vers[q.Peek()] == countsT[q.Peek()])
-                            {
-                                u = q.Pop();
-                                pr.Add(u);
                             }
 
                         }
 
-                        yop.Add(pr);
-                        pr = null;
-                        pr = new List<int>();
+                        if (vers[q.Peek()] == counts[q.Peek()])
+                        {
+                            u = q.Pop();
+                            ToK.Add(u);
+                        }
+
+
                     }
-
                 }
+            }
 
-            
-                for (int i = 0; i < yop.Count; i++)
+
+
+            for (int i = 0; i < n; i++)
+            {
+                used[i] = false;
+                vers[i] = 0;
+
+                for (int j = 0; j < n; j++)
+                    copy[i, j] = 0;
+            }
+
+
+            k = 0;
+
+            for (int l = 0; l < ToK.Count; l++)
+            {
+                if (used[ToK[ToK.Count - l - 1]] == false)
                 {
-                    str = "";
+                    unit = ToK[ToK.Count - l - 1];
+                    q.Push(unit);
+                    used[unit] = true;
 
-                    for (int j = 0; j < yop[i].Count; j++)
+                    while (q.Count != 0)
                     {
-                        if (yop[i].Count != 1)
-                            str += (yop[i][j] + 1) + " ";
+                        unit = q.Peek();
+                        count = countsT[unit];
+
+                        for (int i = 0; i < n; i++)
+                        {
+                            if ((sumigT[unit, i] == 1) && (used[i] == false))
+                            {
+                                copy[unit, i] = sumigT[unit, i];
+                                vers[unit]++;
+                                used[i] = true;
+                                q.Push(i);
+                                k++;
+                                break;
+                            }
+                            else
+                            {
+                                if ((sumigT[unit, i] == 1) && (used[i] == true) && (copy[unit, i] == 0))
+                                {
+                                    vers[unit]++;
+                                    copy[unit, i] = 1;
+                                }
+                            }
+
+
+                        }
+
+                        if (vers[q.Peek()] == countsT[q.Peek()])
+                        {
+                            u = q.Pop();
+                            pr.Add(u);
+                        }
+
                     }
 
-                    outList.Items.Add(str);
+                    yop.Add(pr);
+                    pr = null;
+                    pr = new List<int>();
                 }
 
-            
+            }
+
+
+            for (int i = 0; i < yop.Count; i++)
+            {
+                str = "";
+
+                for (int j = 0; j < yop[i].Count; j++)
+                {
+                    if (yop[i].Count != 1)
+                        str += (yop[i][j] + 1) + " ";
+                }
+
+                outList.Items.Add(str);
+            }
+
+
 
         }
 
-        public void twoDeckster(int start,int finish,bool fl)
+        public void twoDeckster(int start, int finish, bool fl)
         {
             CreateDosiazhosti_2();
 
-            string ToProverka = "",marsh="";
+            string ToProverka = "", marsh = "";
             Stack<int> q = new Stack<int>();
 
             bool[] used = new bool[n];
@@ -1652,7 +1657,7 @@ namespace Labs
                 unit = 0,
                 len = 0;
 
-            for(int i=0;i< n;i++)
+            for (int i = 0; i < n; i++)
             {
                 used[i] = false;
                 l[i] = Int16.MaxValue;
@@ -1665,7 +1670,7 @@ namespace Labs
             {
                 unit = searchMin(l, used);
 
-                for (int i=0;i< n;i++)
+                for (int i = 0; i < n; i++)
                 {
                     if (sumig[unit, i] == 1)
                     {
@@ -1700,7 +1705,7 @@ namespace Labs
                     q.Push(finish);
                     k = from[finish];
 
-                    while(k!=start)
+                    while (k != start)
                     {
                         q.Push(k);
                         k = from[k];
@@ -1712,7 +1717,7 @@ namespace Labs
 
                     marsh += (start + 1).ToString() + " ";
 
-                    for(int i=0;i< vers.Length;i++)
+                    for (int i = 0; i < vers.Length; i++)
                     {
                         marsh += (vers[i] + 1) + " ";
                     }
@@ -1741,14 +1746,14 @@ namespace Labs
         }
 
 
-        private int searchMin(int[] mass,bool[] used)
+        private int searchMin(int[] mass, bool[] used)
         {
             int min = 0,
                 minK = 0;
 
             for (int i = 0; i < n; i++)
             {
-                if (used[i] ==false)
+                if (used[i] == false)
                 {
                     min = mass[i];
                     minK = i;
@@ -1756,7 +1761,7 @@ namespace Labs
                 }
             }
 
-            for(int i=0;i< n;i++)
+            for (int i = 0; i < n; i++)
             {
                 if ((used[i] == false) && (min > mass[i]))
                 {
@@ -1769,10 +1774,10 @@ namespace Labs
         }
 
         private bool AnyFalse(bool[] mass)
-        { 
+        {
             bool res = false;
 
-            for(int i=0;i< n;i++)
+            for (int i = 0; i < n; i++)
             {
                 if (mass[i] == false)
                 {
@@ -1782,19 +1787,19 @@ namespace Labs
             }
 
             return res;
-        } 
+        }
 
-        
+
         private void CreateDosiazhosti_2()
         {
             dosiazhnosti = new int[n, n];
 
-            for(int i=0;i< n;i++)
+            for (int i = 0; i < n; i++)
             {
                 for (int j = 0; j < n; j++)
                     dosiazhnosti[i, j] = 0;
 
-                dosiazhnosti[i,i]=1;
+                dosiazhnosti[i, i] = 1;
             }
 
             string ToProverka = "";
@@ -1858,9 +1863,9 @@ namespace Labs
             int[] d = new int[n];
             bool fl2 = true;
             int k = 0;
-            int x=0;
+            int x = 0;
 
-            for(int i=0;i< n;i++)
+            for (int i = 0; i < n; i++)
             {
                 d[i] = Int16.MaxValue;
                 from[i] = -1;
@@ -1868,18 +1873,18 @@ namespace Labs
 
             d[start] = 0;
 
-           for(int i=0;i< n;i++)
+            for (int i = 0; i < n; i++)
             {
                 x = -1;
 
-                for(int j=0;j<m;j++)
+                for (int j = 0; j < m; j++)
                 {
-                    if(d[mainMassive[j+1,0]-1]<Int16.MaxValue)
+                    if (d[mainMassive[j + 1, 0] - 1] < Int16.MaxValue)
                     {
-                        if(d[mainMassive[j + 1, 1]-1]> d[mainMassive[j + 1, 0]-1] + mainMassive[j + 1, 2])
+                        if (d[mainMassive[j + 1, 1] - 1] > d[mainMassive[j + 1, 0] - 1] + mainMassive[j + 1, 2])
                         {
-                            d[mainMassive[j + 1, 1]-1] = d[mainMassive[j + 1, 0]-1] + mainMassive[j + 1, 2];
-                            from[mainMassive[j + 1, 1]-1] = mainMassive[j + 1, 0]-1;
+                            d[mainMassive[j + 1, 1] - 1] = d[mainMassive[j + 1, 0] - 1] + mainMassive[j + 1, 2];
+                            from[mainMassive[j + 1, 1] - 1] = mainMassive[j + 1, 0] - 1;
                             x = mainMassive[j + 1, 1] - 1;
                             fl2 = true;
                         }
@@ -1949,13 +1954,13 @@ namespace Labs
             vidstan = new int[n, n];
             string ToProverka = "";
             bool fl = false;
-           
 
-            for(int i=0;i< n;i++)
+
+            for (int i = 0; i < n; i++)
             {
-                for(int j=0;j< n;j++)
+                for (int j = 0; j < n; j++)
                 {
-                    if(sumig[i,j]==1)
+                    if (sumig[i, j] == 1)
                     {
                         ToProverka = (i + 1) + " " + (j + 1);
                         vidstan[i, j] = ToWeight[ToProverka];
@@ -1967,20 +1972,20 @@ namespace Labs
                 }
             }
 
-            for(int k=0;k< n;k++)
+            for (int k = 0; k < n; k++)
             {
-                for(int i=0;i< n;i++)
+                for (int i = 0; i < n; i++)
                 {
-                    for(int j=0;j< n;j++)
+                    for (int j = 0; j < n; j++)
                     {
                         vidstan[i, j] = searchMin(vidstan[i, j], vidstan[i, k] + vidstan[k, j]);
                     }
                 }
             }
 
-            for(int i=0;i< n;i++)
+            for (int i = 0; i < n; i++)
             {
-                if(vidstan[i,i]<0)
+                if (vidstan[i, i] < 0)
                 {
                     fl = true;
                 }
@@ -1998,10 +2003,10 @@ namespace Labs
 
                     for (int j = 0; j < n; j++)
                     {
-                        if(vidstan[i,j]>=Int16.MaxValue)
-                            str+=String.Format("{0,4}", "∞") + "  ";
+                        if (vidstan[i, j] >= Int16.MaxValue)
+                            str += String.Format("{0,4}", "∞") + "  ";
                         else
-                        str += FormativeOut(vidstan[i, j]);
+                            str += FormativeOut(vidstan[i, j]);
                     }
 
                     outList.Items.Add(str);
@@ -2014,7 +2019,7 @@ namespace Labs
 
         }
 
-        private int searchMin(int a,int b)
+        private int searchMin(int a, int b)
         {
 
             if (a > b)
@@ -2236,13 +2241,13 @@ namespace Labs
             bool fl = true,
                 fl1 = true;
 
-            for(int i=0;i< n && fl1==true;i++)
+            for (int i = 0; i < n && fl1 == true; i++)
             {
                 Circles = new List<int>();
                 k = 0;
                 fl = true;
 
-                for(int j=0;j< m;j++)
+                for (int j = 0; j < m; j++)
                 {
                     used[j] = false;
                 }
@@ -2274,7 +2279,7 @@ namespace Labs
 
                     }
 
-                    if(Circles.Count==m)
+                    if (Circles.Count == m)
                     {
                         fl1 = false;
                         fl = false;
@@ -2283,24 +2288,24 @@ namespace Labs
                 }
             }
 
-            
 
-            if(!fl1)
+
+            if (!fl1)
             {
-                string str="";
+                string str = "";
 
-                for(int i=0;i< n;i++)
+                for (int i = 0; i < n; i++)
                 {
                     if (stepenVhodu[i] % 2 == 1)
                         k++;
                 }
 
-                if(k==2)
+                if (k == 2)
                     outList.Items.Add("\nЕйлеровий шлях\n");
                 else
                     outList.Items.Add("\nЕйлеровий цикл\n");
 
-                for (int i=0;i< m;i++)
+                for (int i = 0; i < m; i++)
                 {
                     str += FormativeOut(Circles[i]);
                 }
@@ -2317,11 +2322,11 @@ namespace Labs
         {
             stepenVhodu = new int[n];
 
-            for(int i=0;i< n;i++)
+            for (int i = 0; i < n; i++)
             {
                 stepenVhodu[i] = 0;
 
-                for(int j=0;j< m;j++)
+                for (int j = 0; j < m; j++)
                 {
                     if (incident[i, j] == 1 || incident[i, j] == -1)
                         stepenVhodu[i]++;
@@ -2538,29 +2543,29 @@ namespace Labs
             bool res = false,
                 fl1;
 
-            Queue<int>[] sumigThis =new Queue<int>[n];
+            Queue<int>[] sumigThis = new Queue<int>[n];
 
 
-            int x, y=0;
+            int x, y = 0;
 
             for (int i = 0; i < n; i++)
                 sumigThis[i] = new Queue<int>();
 
             q.Push(unit);
 
-            List<int> prom= sumigAll[unit].ToList();
+            List<int> prom = sumigAll[unit].ToList();
 
-            for(int i=0;i<prom.Count;i++)
+            for (int i = 0; i < prom.Count; i++)
             {
                 sumigThis[unit].Enqueue(prom[i]);
             }
-            
 
-            while(q.Count!=0)
+
+            while (q.Count != 0)
             {
                 x = q.Peek();
 
-                if (sumigThis[x].Count!=0)
+                if (sumigThis[x].Count != 0)
                 {
                     y = sumigThis[x].Dequeue();
                     if (!q.Contains(y))
@@ -2595,7 +2600,7 @@ namespace Labs
                             string s = "";
 
                             for (int i = n - 1; i >= 0; i--)
-                                s += FormativeOut(road[i]+1);
+                                s += FormativeOut(road[i] + 1);
 
                             if (fl1)
                                 s += FormativeOut(unit + 1);
@@ -2619,9 +2624,9 @@ namespace Labs
 
         public void Gamilton()
         {
-            bool res=false;
+            bool res = false;
 
-            for(int i=0;i< n;i++)
+            for (int i = 0; i < n; i++)
             {
                 res = GamiltonToOne(i);
 
@@ -2629,11 +2634,11 @@ namespace Labs
                     break;
             }
 
-            if(!res)
+            if (!res)
                 outList.Items.Add("\nНі циклу, ні маршруту не існує");
         }
 
-        public double RetWeight(int start,int finish)
+        public double RetWeight(int start, int finish)
         {
             double res = 0;
 
@@ -2642,18 +2647,21 @@ namespace Labs
             return res;
         }
 
-        private double GamiltonForComi(int unit, int[] road)
+        private double GamiltonForComi(int unit)
         {
 
             Stack<int> q = new Stack<int>();
             Stack<double> prev = new Stack<double>();
 
+
+            int[] road;
             bool fl1,
                 resFl = false;
             double length = 0;
             string key = "";
+            
 
-            Queue <int>[] sumigThis = new Queue<int>[n];
+            Queue<int>[] sumigThis = new Queue<int>[n];
 
             int x, y = 0;
 
@@ -2674,44 +2682,59 @@ namespace Labs
             {
                 x = q.Peek();
 
+                resFl = false;
+
                 if (sumigThis[x].Count != 0)
                 {
-                    y = sumigThis[x].Dequeue();
-                    if (!q.Contains(y))
+
+                    while (!resFl)
                     {
-                        key = x + " " + y;
-                        prev.Push(ToWeightComi[key]);
-                        length += prev.Peek();
-
-                        q.Push(y);
-
-
-                        prom = sumigAll[y].ToList();
-
-                        for (int i = 0; i < prom.Count; i++)
-                        {
-                            sumigThis[y].Enqueue(prom[i]);
-                        }
-
-                        if (q.Count == n)
-                        {
-
-                            road = q.ToArray();
-
-                            fl1 = true;
-
+                        if (sumigThis[x].Count == 0)
                             break;
+                        else
+                        {
+
+                            y = sumigThis[x].Dequeue();
+
+                            if (!q.Contains(y))
+                            {
+                                key = x + " " + y;
+                                prev.Push(ToWeightComi[key]);
+                                length += prev.Peek();
+
+                                resFl = true;
+
+                                q.Push(y);
+
+
+                                prom = sumigAll[y].ToList();
+
+                                for (int i = 0; i < prom.Count; i++)
+                                {
+                                    sumigThis[y].Enqueue(prom[i]);
+                                }
+                           }
                         }
                     }
-                    else
+
+                    if (q.Count == n)
                     {
-                        q.Pop();
-                        length -= prev.Pop();
+
+                        road = q.ToArray();
+
+                        for (int i = n - 1; i >= 0; i--)
+                            forComi += FormativeOut(road[i] + 1);
+
+                        break;
                     }
+
                 }
-                else
+                
+                if(!resFl)
                 {
-                    q.Pop();
+                q.Pop();
+
+                if (prev.Count != 0)
                     length -= prev.Pop();
                 }
             }
@@ -2719,65 +2742,253 @@ namespace Labs
             return length;
         }
 
+    
+
         public void CreateComi()
         {
-            List<int[]> marshs = new List<int[]>(),
-                res = new List<int[]>();
-            string s = "";
+            List<Queue<int>> marshs = new List<Queue<int>>();
+            string s = "",
+                str="";
+            List<string> result = new List<string>();
             int[] prom=new int[n];
             double length = Int32.MaxValue,
                 typ;
 
             for(int i=0;i< n;i++)
             {
-                typ = GamiltonForComi(0, prom);
 
-                if (length>typ)
+                forComi = "";
+
+                typ = GamiltonForComi(i);
+
+                if (length>typ && typ!=0)
                 {
                     if(length==typ)
                     {
-                        marshs.Add(prom);
+                        result.Add(forComi);
                     }
                     else
                     {
                         length = typ;
-                        marshs = new List<int[]>();
-                        marshs.Add(prom);
+                        result = new List<string>();
+                        result.Add(forComi);
                     }
-                }
-            }
-
-            for(int i=0;i<marshs.Count;i++)
-            {
-                prom = marshs[i].ToArray();
-
-                res[i] = new int[n];
-
-                int l = 0;
-
-                for(int j=n-1;j>=0;j--)
-                {
-                    res[i][l] = prom[j];
-                    l++;
                 }
             }
 
             outList.Items.Add("\nЗадача комівояжера\n");
 
-            for(int i=0;i<res.Count;i++)
-            {
+            outList.Items.Add("\nДовжина= " + length);
 
-                for(int j=0;j< n;j++)
-                {
-                    s += FormativeOut(res[i][j]);
-                }
+            outList.Items.Add("\nМаршрут:\n");
+
+            for (int i=0;i<result.Count;i++)
+            {
+                    s += result[i];
 
                 outList.Items.Add(s);
 
                 s = "";
             }
+        }
+
+
+
+        public void NewComi()
+        {
+            double[,] matrix = new double[n, n];
+            double[] minStrok = new double[n],
+                minStolb = new double[n];
+            Dictionary<string, double> reduction = new Dictionary<string, double>();
+            List<int> result = new List<int>();
+            List<Class1> meine = new List<Class1>();
+            Class1 prom;
+            bool[] nowStrok = new bool[n],
+                nowStolb = new bool[n];
+            int marker = Int32.MaxValue, p = 0;
+            double minSt = 0,
+              minStr = 0,
+              length = 0;
+
+            string key = "",
+                print = "";
+
+            bool fl = true;
+
+            for(int i=0;i< n;i++)
+            {
+                nowStrok[i] = true;
+                nowStolb[i] = true;
+
+                for(int j=0;j< n;j++)
+                {
+                    if(i==j)
+                    {
+                        matrix[i, j] = marker;
+                    }
+                    else
+                    {
+                        key = i + " " + j;
+                        matrix[i, j] = ToWeightComi[key];
+                    }
+                }
+            }
+
+            while(fl)
+            {
+                meine = new List<Class1>();
+                p++;
+
+                for (int i=0;i< n;i++)
+                {
+                    if (nowStrok[i])
+                    {
+                        minStrok[i] = matrix[i, 0];
+
+                        for (int j = 1; j < n; j++)
+                        {
+                            if (minStrok[i] > matrix[i, j])
+                            {
+                                minStrok[i] = matrix[i, j];
+                            }
+                        }
+                    }
+                }
+
+                for(int i=0;i< n;i++)
+                {
+                    if (nowStrok[i])
+                    {
+                        for (int j = 0; j < n; j++)
+                        {
+                            if (matrix[i, j] != marker)
+                                matrix[i, j] -= minStrok[i];
+                        }
+                    }
+                }
+
+                for(int j=0;j< n;j++)
+                {
+                    if (nowStolb[j])
+                    {
+                        minStolb[j] = matrix[0, j];
+
+                        for (int i = 1; i < n; i++)
+                        {
+                            if (minStolb[j] > matrix[i, j])
+                                minStolb[j] = matrix[i, j];
+                        }
+                    }
+                }
+
+                for (int i = 0; i < n; i++)
+                {
+                    if (nowStolb[i])
+                    {
+                        for (int j = 0; j < n; j++)
+                        {
+                            if (matrix[i, j] != marker)
+                                matrix[i, j] -= minStolb[j];
+                        }
+                    }
+                }
+
+                for(int i=0;i< n;i++)
+                {
+                    if (nowStrok[i])
+                    {
+                        for (int j = 0; j < n; j++)
+                        {
+
+                            if (matrix[i, j] == 0)
+                            {
+                                for (int i1 = 0; i1 < n; i1++)
+                                {
+                                    if (i1!=i)
+                                    {
+                                        minSt = matrix[i1, j];
+                                        break;
+                                    }
+                                }
+
+                                for (int i1 = 0; i1 < n; i1++)
+                                {
+                                    if (i1 != j)
+                                    {
+                                        minStr = matrix[i, i1];
+                                        break;
+                                    }
+                                }
+
+
+                                for (int i1 = 0; i1 < n; i1++)
+                                {
+                                    if ((minSt > matrix[i1, j]) && i1 != i)
+                                        minSt = matrix[i1, j];
+
+                                    if ((minStr > matrix[i, i1]) && i1 != j)
+                                        minStr = matrix[i, i1];
+                                }
+
+                                minSt += minStr;
+
+                                prom = new Class1(minSt, i, j);
+                                
+                                if((!result.Contains(i+1) && !result.Contains(j+1)))                          
+                                meine.Add(prom);
+
+                                if ((result.Count == n - 1) && (result[result.Count - 1] != prom.i + 1))
+                                    meine.Add(prom);
+                            }
+                        }
+                    }
+                }
+
+                prom = meine[0];
+
+                for(int i=0;i<meine.Count;i++)
+                {
+                    if ((prom.value < meine[i].value))
+                                prom = meine[i];
+                }
+
+                nowStrok[prom.i] = false;
+                nowStolb[prom.j] = false;
+
+                for (int i = 0; i < n; i++)
+                {
+                    matrix[i, prom.j] = marker;
+                    matrix[prom.i, i] = marker;
+                }
+
+                matrix[prom.j, prom.i] = marker;
+
+                result.Add(prom.i + 1);
+                result.Add(prom.j + 1);
+
+                    if (result.Count == n+1)
+                        fl = false;
+
+            }
+
+           
+
+            for (int i=0;i<n;i++)
+            {
+                key = (result[i] - 1) + " " + (result[i + 1] - 1);
+                length += ToWeightComi[key];
+                print += FormativeOut(result[i]);
+                
+            }
+
+            print += FormativeOut(result[n]);
+
+            outList.Items.Add("\nЗадача комівояжера\n");
 
             outList.Items.Add("\nДовжина= " + length);
+
+            outList.Items.Add("\nМаршрут:\n");
+            outList.Items.Add(print);
         }
     }
 

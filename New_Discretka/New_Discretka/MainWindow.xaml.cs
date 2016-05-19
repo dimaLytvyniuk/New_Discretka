@@ -23,7 +23,7 @@ namespace Labs
     public partial class MainWindow : Window
     {
         InputClass inputClass;
-        bool open,weigh;
+        bool open, weigh, comi;
 
         public MainWindow()
         {
@@ -51,15 +51,21 @@ namespace Labs
             {
                 inputClass = new InputClass(openFileDialog1.FileName, inputBox, outputList,comboBoxIn,FirstBox,SecondBox);
 
-                if (weigh)
-                    inputClass.Output(true);
+                if (comi)
+                {
+                    inputClass.CreateMassComi();
+                }
                 else
-                    inputClass.Output();
+                {
+                    if (weigh)
+                        inputClass.Output(true);
+                    else
+                        inputClass.Output();
 
-                inputClass.OutputMassive(true);
+                    inputClass.OutputMassive(true);
 
-                open = true;
-                
+                    open = true;
+                }
 
             }
         }
@@ -124,6 +130,21 @@ namespace Labs
         private void button_Gamilton_Click(object sender, RoutedEventArgs e)
         {
             inputClass.Gamilton();
+        }
+
+        private void button_Comi_Click(object sender, RoutedEventArgs e)
+        {
+            inputClass.NewComi();
+        }
+
+        private void comiBox_Checked(object sender, RoutedEventArgs e)
+        {
+            comi = true;
+        }
+
+        private void comiBox_Copy_Checked(object sender, RoutedEventArgs e)
+        {
+            
         }
 
         private void weightBox_Checked(object sender, RoutedEventArgs e)
