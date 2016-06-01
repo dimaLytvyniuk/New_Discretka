@@ -31,7 +31,8 @@ namespace Labs
         Dictionary<string, int> ToWeight = new Dictionary<string, int>();
         Dictionary<string, double> ToWeightComi = new Dictionary<string, double>();
         bool fl, izo = false;
-        int[] sorting;
+        int[] sorting,
+            parrent;
         Queue<int>[] sumigAll;
         string forComi = "";
 
@@ -1345,7 +1346,7 @@ namespace Labs
 
         }
 
-        private int[] VHeight(int unit)
+        private int[]  VHeight(int unit)
         {
             List<string> res = new List<string>() { };
 
@@ -3013,6 +3014,83 @@ namespace Labs
                 outList.Items.Add("\nГраф не планарний");
             else
                 outList.Items.Add("\nГраф планарний");
+        }
+
+        bool bfs(int s,int t)
+        {
+            bool[] visited = new bool[n];
+            Queue<int> q = new Queue<int>();
+            q.Enqueue(s);
+
+            for (int i = 0; i < n; i++)
+                visited[i] = false;
+
+            visited[s] = true;
+            parrent[s] = -1;
+
+        
+
+            while(q.Count!=0)
+            {
+                int u = q.Dequeue();
+
+                for (int v=0; v < n;v++)
+                {
+                    if(visited[v]==false && (sumig[u, v] == 1))
+                    {
+                        q.Enqueue(v);
+                        parrent[v] = u;
+                        visited[v] = true;
+                    }
+                }
+            }
+
+            return visited[t];
+        }
+
+        public void fordFulkerson(int s,int t)
+        {
+            int u, v,
+                max_flow = 0;
+            parrent = new int[n];
+            int[,] W = new int[n,n];
+
+            for(int i=0;i< n;i++)
+            {
+                for(int j=0;j< n;j++)
+                {
+                    string str = i + " " + j;
+
+                    if (ToWeight.ContainsKey(str))
+                        W[i,j] = ToWeight[str];
+                    else
+                        W[i,j] = 0;
+                }
+            }
+
+            while(bfs(s,t))
+            {
+                int path_flow = Int16.MaxValue;
+
+                for (v = t; v != s; v = parrent[v])
+                {
+                    u = parrent[v];
+
+                    if (path_flow > W[u, v])
+                        path_flow = W[u, v];
+                }
+
+                    for (v = t; v != s; v = parrent[v])
+                    {
+                        u = parrent[v];
+                        W[u, v] -= path_flow;
+                        W[v, u] += path_flow;
+                    }
+
+                max_flow += path_flow;
+            }
+
+            outList.Items.Add("\n\nОб'єм потоку= " + max_flow);
         }
     }
 

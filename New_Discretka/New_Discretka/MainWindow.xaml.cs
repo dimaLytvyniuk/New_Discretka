@@ -150,6 +150,11 @@ namespace Labs
             inputClass.PlanarGraph();
         }
 
+        private void button_Net_Click(object sender, RoutedEventArgs e)
+        {
+            inputClass.fordFulkerson(0, 5);
+        }
+
         private void comiBox_Checked(object sender, RoutedEventArgs e)
         {
             comi = true;

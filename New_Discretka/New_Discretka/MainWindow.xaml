@@ -93,7 +93,12 @@
                     <CheckBox x:Name="checkBox" Content="Неорієнтовний" Margin="33,98,119,317" Checked="checkBox_Checked"/>
                 </Grid>
             </TabItem>
+            <TabItem Header="Лабораторна робота №16">
+                <Grid>
+                    <Button x:Name="button_Net" Content="Максимальний потік мережі" Background="White" Click="button_Net_Click" Margin="24.17,45.975,21.829,344.024" Width="265" UseLayoutRounding="False" Height="42"/>
 
+                </Grid>
+            </TabItem>
         </TabControl>
     </Grid>
 </Window>
